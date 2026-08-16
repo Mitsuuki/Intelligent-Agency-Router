@@ -224,17 +224,26 @@
     </div>
 
     <div class="container">
-        <!-- LEFT COLUMN: INPUT -->
+<!-- LEFT COLUMN: INPUT -->
         <div class="card">
             <h2>Input Source <span class="badge">Live Demo</span></h2>
+            
+            <!-- NEW TEMPLATE BUTTONS -->
+            <label>Load Test Template:</label>
+            <div style="display:flex; gap: 8px; margin-bottom: 20px;">
+                <button type="button" onclick="loadTemplate('lead')" style="padding: 8px; font-size: 11px;">New Real Estate Lead</button>
+                <button type="button" onclick="loadTemplate('invoice')" style="padding: 8px; font-size: 11px;">Supplier Invoice</button>
+                <button type="button" onclick="loadTemplate('complaint')" style="padding: 8px; font-size: 11px;">Urgent Complaint</button>
+            </div>
+
             <form id="router-form">
                 <label for="raw-data">Raw / Unstructured Data</label>
-                <textarea id="raw-data" placeholder="Paste a messy client email, supplier invoice, support ticket, or raw lead dump here..."></textarea>
+                <textarea id="raw-data" placeholder="Paste a messy client email, supplier invoice, support ticket..."></textarea>
 
                 <label for="destination">Target CRM / Platform</label>
                 <select id="destination">
                     <option value="airtable" data-mode="visual">Airtable (Visual CRM Sync)</option>
-                    <option value="clickup" data-mode="visual">ClickUp (Visual Kanban Sync)</option>
+                    <option value="clickup" data-mode="visual">ClickUp (Task Management Sync)</option>
                     <option value="gohighlevel" data-mode="api">GoHighLevel (API Handshake)</option>
                     <option value="hubspot" data-mode="api">HubSpot (API Handshake)</option>
                     <option value="asana" data-mode="api">Asana (API Handshake)</option>
@@ -278,7 +287,7 @@
             </div>
 
         </div>
-        
+
             <!-- API Mode: Terminal Console -->
             <div class="card">
                 <h2>API Server Logs <span class="badge">Backend Monitor</span></h2>
@@ -434,6 +443,20 @@
                 }, 1500); // Simulated delay
             }
         });
+
+        function loadTemplate(type) {
+            const textarea = document.getElementById('raw-data');
+            const templates = {
+                'lead': "Hi, I'm looking for a luxury home in Beverly Hills. My name is Michael Scott from Dunder Mifflin, budget is like 2 million? I want to see the pine street property ASAP. Can we do this Friday?",
+                'invoice': "Hey Apex, just checking in. We sent 50 units of high-end floor tiles for $500 each, plus 20 units of marble sinks for $300. Please process payment before the delivery this Tuesday. Thanks - TileCorp Supplies.",
+                'complaint': "THIS IS UNACCEPTABLE. I have been waiting for my viewing confirmation for 3 days now. My name is Toby Flenderson. This property management service is a disaster. FIX IT NOW."
+            };
+            
+            textarea.value = templates[type];
+            // Auto-resize textarea to fit content
+            textarea.style.height = "auto";
+            textarea.style.height = (textarea.scrollHeight) + "px";
+        }
     </script>
 </body>
 </html>
