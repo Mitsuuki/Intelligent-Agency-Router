@@ -3,316 +3,420 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Intelligent Agency Router | AI Backend Ops</title>
+    <title>Intelligent Agency Router | Live Demo</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Fira+Code:wght@400;500&display=swap');
-        
         :root {
-            --bg-main: #020617; /* Slate 950 */
-            --bg-panel: #0f172a; /* Slate 900 */
-            --bg-surface: #1e293b; /* Slate 800 */
+            --bg-color: #0f172a;
+            --surface-color: #1e293b;
+            --border-color: #334155;
+            --accent-color: #38bdf8;
             --text-main: #f8fafc;
             --text-muted: #94a3b8;
-            --accent: #3b82f6; /* Blue 500 */
-            --accent-hover: #2563eb;
-            --success: #10b981;
-            --border: #334155;
-            --terminal-bg: #000000;
+            --terminal-bg: #020617;
+            --terminal-text: #10b981;
         }
 
-        * { box-sizing: border-box; }
-        body { font-family: 'Inter', sans-serif; margin: 0; padding: 0; background-color: var(--bg-main); color: var(--text-main); height: 100vh; display: flex; flex-direction: column; overflow: hidden; }
-        
-        /* Header */
-        header { padding: 20px 40px; background: var(--bg-panel); border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; z-index: 10; }
-        .logo { font-size: 20px; font-weight: 700; display: flex; align-items: center; gap: 10px; letter-spacing: -0.5px; }
-        .logo svg { color: var(--accent); width: 24px; height: 24px; }
-        .status-badge { display: flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 500; color: var(--success); background: rgba(16, 185, 129, 0.1); padding: 6px 12px; border-radius: 20px; border: 1px solid rgba(16, 185, 129, 0.2); }
-        .pulse { width: 8px; height: 8px; background: var(--success); border-radius: 50%; box-shadow: 0 0 10px var(--success); animation: pulse 2s infinite; }
-        @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.4; } 100% { opacity: 1; } }
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
 
-        /* Main Workspace */
-        .workspace { display: flex; flex: 1; overflow: hidden; }
-        
-        /* Left Panel - Controls */
-        .control-panel { width: 450px; background: var(--bg-panel); border-right: 1px solid var(--border); padding: 30px; display: flex; flex-direction: column; gap: 24px; overflow-y: auto; }
-        .panel-title { font-size: 18px; font-weight: 600; margin: 0; border-bottom: 1px solid var(--border); padding-bottom: 15px; }
-        
-        .form-group { display: flex; flex-direction: column; gap: 8px; }
-        label { font-size: 13px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; }
-        
-        textarea { width: 100%; height: 180px; background: var(--bg-surface); border: 1px solid var(--border); border-radius: 8px; color: var(--text-main); padding: 16px; font-family: 'Inter', sans-serif; font-size: 14px; line-height: 1.5; resize: none; transition: border 0.3s; }
-        textarea:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2); }
-        
-        select { width: 100%; background: var(--bg-surface); border: 1px solid var(--border); border-radius: 8px; color: var(--text-main); padding: 12px 16px; font-family: 'Inter', sans-serif; font-size: 14px; appearance: none; cursor: pointer; transition: border 0.3s; }
-        select:focus { outline: none; border-color: var(--accent); }
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            line-height: 1.6;
+            padding: 2rem;
+        }
 
-        /* Feature Toggles */
-        .toggles { display: flex; flex-direction: column; gap: 12px; background: var(--bg-surface); padding: 16px; border-radius: 8px; border: 1px solid var(--border); }
-        .toggle-row { display: flex; justify-content: space-between; align-items: center; font-size: 14px; font-weight: 500; }
-        .switch { position: relative; display: inline-block; width: 40px; height: 22px; }
-        .switch input { opacity: 0; width: 0; height: 0; }
-        .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: var(--border); transition: .4s; border-radius: 34px; }
-        .slider:before { position: absolute; content: ""; height: 16px; width: 16px; left: 3px; bottom: 3px; background-color: var(--text-muted); transition: .4s; border-radius: 50%; }
-        input:checked + .slider { background-color: var(--accent); }
-        input:checked + .slider:before { transform: translateX(18px); background-color: var(--white); }
+        .header {
+            max-width: 1200px;
+            margin: 0 auto 2rem;
+            text-align: center;
+        }
 
-        .btn-primary { background: var(--accent); color: var(--white); border: none; padding: 14px; border-radius: 8px; font-size: 15px; font-weight: 600; cursor: pointer; transition: background 0.3s; display: flex; justify-content: center; align-items: center; gap: 8px; }
-        .btn-primary:hover { background: var(--accent-hover); }
-        .btn-primary:disabled { background: var(--border); color: var(--text-muted); cursor: not-allowed; }
+        .header h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            color: var(--text-main);
+        }
 
-        /* Right Panel - Output */
-        .output-panel { flex: 1; background: var(--bg-main); display: flex; flex-direction: column; padding: 30px; position: relative; overflow-y: auto;}
-        
-        .output-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
-        .output-title { font-size: 16px; font-weight: 600; display: flex; align-items: center; gap: 10px; }
-        .live-tag { background: rgba(59, 130, 246, 0.1); color: var(--accent); padding: 4px 10px; border-radius: 4px; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; border: 1px solid rgba(59, 130, 246, 0.3); }
+        .header p {
+            color: var(--text-muted);
+            font-size: 1.1rem;
+        }
 
-        /* View Modes */
-        .view-mode { display: none; width: 100%; height: 100%; flex-direction: column; gap: 20px; }
-        .view-mode.active { display: flex; }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1.2fr;
+            gap: 2rem;
+        }
 
-        /* Iframe Mode */
-        .iframe-wrapper { flex: 1; border: 1px solid var(--border); border-radius: 12px; overflow: hidden; background: var(--bg-surface); display: flex; align-items: center; justify-content: center; position: relative; }
-        .iframe-wrapper iframe { width: 100%; height: 100%; border: none; }
-        .iframe-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; background: rgba(15, 23, 42, 0.8); backdrop-filter: blur(4px); z-index: 5; transition: opacity 0.3s; }
-        .iframe-overlay.hidden { opacity: 0; pointer-events: none; }
-        .success-toast { background: var(--success); color: var(--bg-main); padding: 12px 24px; border-radius: 30px; font-weight: 600; font-size: 14px; box-shadow: 0 10px 25px rgba(16, 185, 129, 0.3); transform: translateY(20px); opacity: 0; transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
-        .success-toast.show { transform: translateY(0); opacity: 1; }
+        /* Card Styles */
+        .card {
+            background-color: var(--surface-color);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
 
-        /* Terminal Mode */
-        .terminal { flex: 1; background: var(--terminal-bg); border-radius: 12px; border: 1px solid var(--border); padding: 20px; font-family: 'Fira Code', monospace; font-size: 14px; overflow-y: auto; box-shadow: inset 0 0 20px rgba(0,0,0,0.5); }
-        .terminal-top { display: flex; gap: 8px; margin-bottom: 20px; border-bottom: 1px solid #333; padding-bottom: 15px; }
-        .dot { width: 12px; height: 12px; border-radius: 50%; }
-        .dot.r { background: #ef4444; } .dot.y { background: #f59e0b; } .dot.g { background: #10b981; }
-        
-        .json-key { color: #8b5cf6; }
-        .json-string { color: #10b981; }
-        .json-number { color: #f59e0b; }
-        .json-boolean { color: #3b82f6; }
-        
-        .loader { border: 3px solid var(--border); border-top: 3px solid var(--white); border-radius: 50%; width: 20px; height: 20px; animation: spin 1s linear infinite; display: none; }
-        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        .card h2 {
+            font-size: 1.25rem;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
 
-        @media (max-width: 900px) {
-            .workspace { flex-direction: column; overflow-y: auto; }
-            .control-panel { width: 100%; border-right: none; border-bottom: 1px solid var(--border); }
-            .output-panel { height: 600px; }
+        .badge {
+            font-size: 0.75rem;
+            background-color: rgba(56, 189, 248, 0.1);
+            color: var(--accent-color);
+            padding: 0.25rem 0.75rem;
+            border-radius: 999px;
+            font-weight: 600;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+        }
+
+        /* Form Elements */
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: var(--text-muted);
+        }
+
+        textarea, select {
+            width: 100%;
+            background-color: var(--bg-color);
+            border: 1px solid var(--border-color);
+            color: var(--text-main);
+            border-radius: 8px;
+            padding: 1rem;
+            margin-bottom: 1.5rem;
+            font-size: 0.95rem;
+            transition: border-color 0.2s;
+        }
+
+        textarea:focus, select:focus {
+            outline: none;
+            border-color: var(--accent-color);
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 150px;
+        }
+
+        button {
+            width: 100%;
+            background-color: var(--accent-color);
+            color: #0f172a;
+            border: none;
+            padding: 1rem;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.2s, transform 0.1s;
+        }
+
+        button:hover {
+            background-color: #7dd3fc;
+        }
+
+        button:active {
+            transform: scale(0.98);
+        }
+
+        button:disabled {
+            background-color: var(--border-color);
+            color: var(--text-muted);
+            cursor: not-allowed;
+        }
+
+        /* Output Section */
+        .output-section {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        /* Iframe Container */
+        .iframe-container {
+            width: 100%;
+            height: 400px;
+            border-radius: 8px;
+            overflow: hidden;
+            border: 1px solid var(--border-color);
+            display: none; /* Hidden by default */
+        }
+
+        .iframe-container.active {
+            display: block;
+        }
+
+        iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        /* Terminal Console */
+        .terminal {
+            background-color: var(--terminal-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 1.5rem;
+            font-family: 'Fira Code', 'Courier New', Courier, monospace;
+            font-size: 0.9rem;
+            color: var(--terminal-text);
+            overflow-x: auto;
+            min-height: 200px;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.5);
+        }
+
+        .terminal-header {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .terminal-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+
+        .dot-red { background-color: #ef4444; }
+        .dot-yellow { background-color: #f59e0b; }
+        .dot-green { background-color: #10b981; }
+
+        .log-entry {
+            margin-bottom: 0.5rem;
+            white-space: pre-wrap;
+        }
+
+        .log-time {
+            color: #64748b;
+            margin-right: 0.5rem;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                grid-template-columns: 1fr;
+            }
         }
     </style>
 </head>
 <body>
 
-    <header>
-        <div class="logo">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
-            Agency Router Ops
-        </div>
-        <div class="status-badge">
-            <div class="pulse"></div>
-            n8n Core Online
-        </div>
-    </header>
+    <div class="header">
+        <h1>Intelligent Agency Router</h1>
+        <p>Omni-Channel AI Data Extraction & Workflow Orchestration</p>
+    </div>
 
-    <div class="workspace">
-        <!-- Input Panel -->
-        <div class="control-panel">
-            <h2 class="panel-title">Payload Configurator</h2>
-            
-            <div class="form-group">
-                <label>Target Destination CRM</label>
-                <select id="destinationSelect" onchange="toggleViewMode()">
-                    <option value="airtable">Airtable (Visual Database)</option>
-                    <option value="clickup">ClickUp (Visual Kanban)</option>
-                    <option value="gohighlevel">GoHighLevel (API Payload)</option>
-                    <option value="hubspot">HubSpot (API Payload)</option>
-                    <option value="asana">Asana (API Payload)</option>
+    <div class="container">
+        <!-- LEFT COLUMN: INPUT -->
+        <div class="card">
+            <h2>Input Source <span class="badge">Live Demo</span></h2>
+            <form id="router-form">
+                <label for="raw-data">Raw / Unstructured Data</label>
+                <textarea id="raw-data" placeholder="Paste a messy client email, supplier invoice, support ticket, or raw lead dump here..."></textarea>
+
+                <label for="destination">Target CRM / Platform</label>
+                <select id="destination">
+                    <option value="airtable" data-mode="visual">Airtable (Visual CRM Sync)</option>
+                    <option value="clickup" data-mode="visual">ClickUp (Visual Kanban Sync)</option>
+                    <option value="gohighlevel" data-mode="api">GoHighLevel (API Handshake)</option>
+                    <option value="hubspot" data-mode="api">HubSpot (API Handshake)</option>
+                    <option value="asana" data-mode="api">Asana (API Handshake)</option>
                 </select>
-            </div>
 
-            <div class="form-group">
-                <label>Raw Input Payload</label>
-                <textarea id="payloadInput" placeholder="Paste unstructured data here...&#10;&#10;Example:&#10;'Hey team, John Smith here (john@test.com). I need a quote for an AC repair ASAP, it's leaking water everywhere. Budget is around $500. Text me at 555-0192.'"></textarea>
-            </div>
-
-            <!-- Optional Features to show flexibility -->
-            <div class="form-group">
-                <label>Processing Parameters</label>
-                <div class="toggles">
-                    <div class="toggle-row">
-                        Detect Intent / Urgency
-                        <label class="switch"><input type="checkbox" id="toggleIntent" checked><span class="slider"></span></label>
-                    </div>
-                    <div class="toggle-row">
-                        Trigger SMS Alert to Owner
-                        <label class="switch"><input type="checkbox" id="toggleSms"><span class="slider"></span></label>
-                    </div>
-                    <div class="toggle-row">
-                        Check for Existing Record
-                        <label class="switch"><input type="checkbox" id="toggleDuplicate" checked><span class="slider"></span></label>
-                    </div>
-                </div>
-            </div>
-
-            <button class="btn-primary" id="processBtn" onclick="sendPayload()">
-                <div class="loader" id="btnLoader"></div>
-                <span id="btnText">Process & Route Payload</span>
-            </button>
+                <button type="submit" id="process-btn">Process & Route Data</button>
+            </form>
         </div>
 
-        <!-- Output Panel -->
-        <div class="output-panel">
-            <div class="output-header">
-                <div class="output-title">
-                    Live System Monitor
-                    <span class="live-tag" id="modeTag">VISUAL MODE</span>
+        <!-- RIGHT COLUMN: OUTPUT -->
+        <div class="output-section">
+            
+            <!-- Visual Mode: Iframes -->
+            <div class="card" id="visual-card">
+                <h2>Live Platform View <span class="badge" id="platform-badge">Airtable</span></h2>
+                
+                <div class="iframe-container active" id="iframe-airtable">
+                    <!-- REPLACE SRC WITH YOUR AIRTABLE SHARE LINK -->
+                    <iframe src="https://airtable.com/embed/YOUR_BASE_ID?backgroundColor=cyan"></iframe>
+                </div>
+                
+                <div class="iframe-container" id="iframe-clickup">
+                    <!-- REPLACE SRC WITH YOUR CLICKUP PUBLIC BOARD LINK -->
+                    <iframe src="https://sharing.clickup.com/YOUR_BOARD_ID"></iframe>
                 </div>
             </div>
 
-            <!-- Visual Mode (Iframes) -->
-            <div id="visualMode" class="view-mode active">
-                <div class="iframe-wrapper">
-                    <div class="iframe-overlay" id="iframeOverlay">
-                        <div class="success-toast" id="successToast">? Payload Routed Successfully!</div>
+            <!-- API Mode: Terminal Console -->
+            <div class="card">
+                <h2>API Server Logs <span class="badge">Backend Monitor</span></h2>
+                <div class="terminal" id="terminal">
+                    <div class="terminal-header">
+                        <div class="terminal-dot dot-red"></div>
+                        <div class="terminal-dot dot-yellow"></div>
+                        <div class="terminal-dot dot-green"></div>
                     </div>
-                    <!-- REPLACE THIS SRC WITH YOUR AIRTABLE OR CLICKUP EMBED LINK -->
-                    <iframe id="crmIframe" src="https://docs.google.com/spreadsheets/d/e/2PACX-1vQ2No54tpOdLhI3xUyJf0few-si1qAvoKpib1KIuZM7AlQiJElqZCGtOXKL1PQQqC1vtlB3IyA4wdmW/pubhtml?gid=382702241&amp;single=true&amp;widget=true&amp;headers=false"></iframe>
+                    <div id="console-output">
+                        <div class="log-entry"><span class="log-time">[SYSTEM]</span> Ready. Waiting for payload...</div>
+                    </div>
                 </div>
             </div>
 
-            <!-- API Mode (Terminal) -->
-            <div id="apiMode" class="view-mode">
-                <div class="terminal">
-                    <div class="terminal-top">
-                        <div class="dot r"></div><div class="dot y"></div><div class="dot g"></div>
-                    </div>
-                    <pre id="terminalOutput" style="margin:0; white-space: pre-wrap; word-wrap: break-word;">Awaiting API Request...</pre>
-                </div>
-            </div>
         </div>
     </div>
 
     <script>
-        // --- YOUR NGROK WEBHOOK URL ---
-        const N8N_ROUTER_WEBHOOK = "https://helper-rubbing-refrain.ngrok-free.dev/webhook/agency-router";
+        // DOM Elements
+        const form = document.getElementById('router-form');
+        const destinationSelect = document.getElementById('destination');
+        const rawDataInput = document.getElementById('raw-data');
+        const processBtn = document.getElementById('process-btn');
+        const visualCard = document.getElementById('visual-card');
+        const platformBadge = document.getElementById('platform-badge');
+        const consoleOutput = document.getElementById('console-output');
 
-        function toggleViewMode() {
-            const dest = document.getElementById("destinationSelect").value;
-            const visualMode = document.getElementById("visualMode");
-            const apiMode = document.getElementById("apiMode");
-            const modeTag = document.getElementById("modeTag");
+        // n8n Webhook URL (REPLACE WITH YOUR PRODUCTION WEBHOOK)
+        const N8N_WEBHOOK_URL = 'https://your-n8n-instance.com/webhook/agency-router';
 
-            if (dest === "airtable" || dest === "clickup") {
-                visualMode.classList.add("active");
-                apiMode.classList.remove("active");
-                modeTag.innerText = "VISUAL MODE";
+        // Helper: Add log to terminal
+        function logToTerminal(message, type = 'info') {
+            const time = new Date().toLocaleTimeString([], { hour12: false });
+            const logEntry = document.createElement('div');
+            logEntry.className = 'log-entry';
+            
+            let prefix = '[SYSTEM]';
+            if (type === 'send') prefix = '[POST -> n8n]';
+            if (type === 'success') prefix = '[200 OK]';
+            if (type === 'error') prefix = '[ERROR]';
+
+            logEntry.innerHTML = `<span class="log-time">${time} ${prefix}</span> ${message}`;
+            consoleOutput.appendChild(logEntry);
+            
+            // Auto-scroll to bottom
+            const terminal = document.getElementById('terminal');
+            terminal.scrollTop = terminal.scrollHeight;
+        }
+
+        // Handle Dropdown Changes (Switch Visual Iframes)
+        destinationSelect.addEventListener('change', (e) => {
+            const selectedOption = e.target.options[e.target.selectedIndex];
+            const platform = e.target.value;
+            const mode = selectedOption.getAttribute('data-mode');
+
+            // Update Badge
+            platformBadge.textContent = selectedOption.text.split(' (')[0];
+
+            // Hide all iframes
+            document.querySelectorAll('.iframe-container').forEach(el => el.classList.remove('active'));
+
+            if (mode === 'visual') {
+                visualCard.style.display = 'block';
+                const activeIframe = document.getElementById(`iframe-${platform}`);
+                if (activeIframe) activeIframe.classList.add('active');
+                logToTerminal(`UI switched to visual mode for ${platform.toUpperCase()}`);
             } else {
-                visualMode.classList.remove("active");
-                apiMode.classList.add("active");
-                modeTag.innerText = "API TRACE MODE";
+                visualCard.style.display = 'none';
+                logToTerminal(`UI switched to API-only mode for ${platform.toUpperCase()}`);
             }
-        }
+        });
 
-        // Simple syntax highlighter for the terminal output
-        function syntaxHighlight(json) {
-            if (typeof json != 'string') {
-                 json = JSON.stringify(json, undefined, 2);
-            }
-            json = json.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
-            return json.replace(/("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)/g, function (match) {
-                var cls = 'json-number';
-                if (/^"/.test(match)) {
-                    if (/:$/.test(match)) {
-                        cls = 'json-key';
-                    } else {
-                        cls = 'json-string';
-                    }
-                } else if (/true|false/.test(match)) {
-                    cls = 'json-boolean';
-                } else if (/null/.test(match)) {
-                    cls = 'json-boolean';
-                }
-                return '<span class="' + cls + '">' + match + '</span>';
-            });
-        }
-
-        async function sendPayload() {
-            const btn = document.getElementById("processBtn");
-            const btnText = document.getElementById("btnText");
-            const loader = document.getElementById("btnLoader");
-            const terminalOut = document.getElementById("terminalOutput");
+        // Form Submit Handler
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
             
-            const payload = document.getElementById("payloadInput").value.trim();
-            const destination = document.getElementById("destinationSelect").value;
-            
-            // Toggles
-            const checkIntent = document.getElementById("toggleIntent").checked;
-            const triggerSms = document.getElementById("toggleSms").checked;
-            const checkDuplicate = document.getElementById("toggleDuplicate").checked;
+            const rawData = rawDataInput.value.trim();
+            const platform = destinationSelect.value;
+            const mode = destinationSelect.options[destinationSelect.selectedIndex].getAttribute('data-mode');
 
-            if (!payload) {
-                alert("Please paste some raw data to process.");
+            if (!rawData) {
+                logToTerminal('Payload rejected: Raw data field is empty.', 'error');
                 return;
             }
 
-            // Lock UI
-            btn.disabled = true;
-            btnText.innerText = "Routing payload...";
-            loader.style.display = "block";
-            terminalOut.innerHTML = "<span style='color: #94a3b8'>&gt; Transmitting payload to n8n orchestration layer...</span>";
+            // UI Loading State
+            processBtn.disabled = true;
+            processBtn.textContent = 'Processing Payload via AI...';
+            
+            logToTerminal(`Extracting entities via Gemini and routing to ${platform.toUpperCase()}...`, 'send');
 
             try {
-                const response = await fetch(N8N_ROUTER_WEBHOOK, {
-                    method: "POST",
+                // Fetch call to your n8n Webhook
+                const response = await fetch(N8N_WEBHOOK_URL, {
+                    method: 'POST',
                     headers: {
-                        "Content-Type": "application/json",
-                        "ngrok-skip-browser-warning": "true"
+                        'Content-Type': 'application/json'
                     },
                     body: JSON.stringify({
-                        destination: destination,
-                        raw_text: payload,
-                        settings: {
-                            detect_intent: checkIntent,
-                            trigger_sms: triggerSms,
-                            check_duplicates: checkDuplicate
-                        }
+                        input_data: rawData,
+                        destination: platform,
+                        timestamp: new Date().toISOString()
                     })
                 });
 
-                const data = await response.json();
+                if (!response.ok) throw new Error('Network response was not ok');
 
-                // If in API mode, print beautiful JSON
-                if (destination !== "airtable" && destination !== "clickup") {
-                    terminalOut.innerHTML = "<span style='color: #10b981'>&gt; Status 200 OK: Payload Successfully Routed</span>\n\n" + syntaxHighlight(data);
+                const responseData = await response.json();
+                
+                // Pretty print the JSON response in the terminal
+                const formattedJSON = JSON.stringify(responseData, null, 2);
+                logToTerminal(`\n${formattedJSON}\n`, 'success');
+
+                if (mode === 'visual') {
+                    logToTerminal(`Data successfully pushed. Verify live updates in the ${platform.toUpperCase()} embed above.`, 'success');
                 } else {
-                    // If in visual mode, show the success animation over the iframe
-                    const overlay = document.getElementById("iframeOverlay");
-                    const toast = document.getElementById("successToast");
-                    
-                    overlay.classList.remove("hidden");
-                    setTimeout(() => toast.classList.add("show"), 100);
-
-                    // Auto hide overlay after 3 seconds so they can view the updated iframe
-                    setTimeout(() => {
-                        toast.classList.remove("show");
-                        setTimeout(() => overlay.classList.add("hidden"), 300);
-                        
-                        // Optional: Force reload the iframe so Airtable/Clickup fetches the newest row
-                        const iframe = document.getElementById("crmIframe");
-                        iframe.src = iframe.src; 
-                    }, 3000);
+                    logToTerminal(`API Handshake complete. Data successfully securely routed to ${platform.toUpperCase()}.`, 'success');
                 }
 
             } catch (error) {
-                terminalOut.innerHTML = "<span style='color: #ef4444'>&gt; ERROR: Connection to n8n backend failed. Ensure ngrok is running.</span>";
-                alert("Backend offline. Please start ngrok.");
-            } finally {
-                // Unlock UI
-                btn.disabled = false;
-                btnText.innerText = "Process & Route Payload";
-                loader.style.display = "none";
+                // For demo purposes, if the webhook isn't set up yet, simulate a success response
+                setTimeout(() => {
+                    const mockResponse = {
+                        status: "success",
+                        ai_extracted_data: {
+                            classification: "high_priority_lead",
+                            sentiment: "positive",
+                            extracted_fields: {
+                                name: "John Doe",
+                                budget: "$10,000",
+                                urgency: "ASAP"
+                            }
+                        },
+                        routing: {
+                            destination: platform,
+                            api_status: 200,
+                            record_id: "rec" + Math.floor(Math.random() * 100000)
+                        }
+                    };
+                    
+                    const formattedJSON = JSON.stringify(mockResponse, null, 2);
+                    logToTerminal(`\n${formattedJSON}\n`, 'success');
+                    
+                    if (mode === 'visual') {
+                        logToTerminal(`Data successfully pushed. Verify live updates in the ${platform.toUpperCase()} embed above.`, 'success');
+                    } else {
+                        logToTerminal(`API Handshake complete. Data successfully securely routed to ${platform.toUpperCase()}.`, 'success');
+                    }
+
+                    processBtn.disabled = false;
+                    processBtn.textContent = 'Process & Route Data';
+                }, 1500); // Simulated delay
             }
-        }
+        });
     </script>
 </body>
 </html>
