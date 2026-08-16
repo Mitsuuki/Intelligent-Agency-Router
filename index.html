@@ -244,13 +244,9 @@
             </form>
         </div>
 
-        <!-- RIGHT COLUMN: OUTPUT -->
+<!-- RIGHT COLUMN: OUTPUT -->
         <div class="output-section">
             
-            <!-- Visual Mode: Iframes -->
-            <div class="card" id="visual-card">
-                <h2>Live Platform View <span class="badge" id="platform-badge">Airtable</span></h2>
-                
             <!-- Visual Mode: Iframes -->
             <div class="card" id="visual-card">
                 <h2>Live Platform View <span class="badge" id="platform-badge">Airtable</span></h2>
@@ -266,6 +262,23 @@
                 </div>
             </div>
 
+            <!-- API Mode: Terminal Console -->
+            <div class="card" id="terminal-card">
+                <h2>API Server Logs <span class="badge">Backend Monitor</span></h2>
+                <div class="terminal" id="terminal">
+                    <div class="terminal-header">
+                        <div class="terminal-dot dot-red"></div>
+                        <div class="terminal-dot dot-yellow"></div>
+                        <div class="terminal-dot dot-green"></div>
+                    </div>
+                    <div id="console-output">
+                        <div class="log-entry"><span class="log-time">[SYSTEM]</span> Ready. Waiting for payload...</div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        
             <!-- API Mode: Terminal Console -->
             <div class="card">
                 <h2>API Server Logs <span class="badge">Backend Monitor</span></h2>
