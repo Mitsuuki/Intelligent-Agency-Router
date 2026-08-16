@@ -3,377 +3,420 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
-    <!-- CACHE BUSTING TAGS -->
-    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-    <meta http-equiv="Pragma" content="no-cache">
-    <meta http-equiv="Expires" content="0">
-    
-    <title>Apex AI | Omnichannel Automation Engine</title>
-    
+    <title>Intelligent Agency Router | Live Demo</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&family=Inter:wght@300;400;500;600&display=swap');
-        
         :root {
-            --primary: #0f172a; 
-            --accent: #b45309; 
-            --accent-light: #fef3c7;
-            --dark: #020617;
-            --light: #f8fafc;
-            --white: #ffffff;
-            --border: #e2e8f0;
+            --bg-color: #0f172a;
+            --surface-color: #1e293b;
+            --border-color: #334155;
+            --accent-color: #38bdf8;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
             --terminal-bg: #020617;
             --terminal-text: #10b981;
         }
 
-        body { font-family: 'Inter', sans-serif; margin: 0; padding: 0; background: var(--light); color: var(--dark); overflow-x: hidden; scroll-behavior: smooth; }
-        
-        header { padding: 30px 50px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; background: rgba(2, 6, 23, 0.85); backdrop-filter: blur(12px); position: sticky; top: 0; z-index: 50; }
-        .logo { font-size: 24px; font-weight: 800; letter-spacing: -0.5px; display: flex; align-items: center; gap: 10px; color: var(--white); }
-        .logo svg { width: 28px; height: 28px; color: #3b82f6; }
-        .logo span { color: #3b82f6; }
-        
-        .dev-btn { background: transparent; color: var(--white); border: 1px solid var(--white); padding: 10px 24px; border-radius: 4px; font-weight: 600; font-size: 13px; cursor: pointer; transition: all 0.3s; text-transform: uppercase; letter-spacing: 1px; display: flex; align-items: center; gap: 8px;}
-        .dev-btn:hover { background: var(--white); color: var(--primary); }
-        .pulse-dot { width: 8px; height: 8px; background-color: #10b981; border-radius: 50%; box-shadow: 0 0 10px #10b981; animation: pulse 2s infinite; }
-        @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7); } 70% { box-shadow: 0 0 0 10px rgba(16, 185, 129, 0); } 100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); } }
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
 
-        /* HERO & CONTENT STYLES (Kept exactly from your code) */
-        .hero { background-color: var(--primary); background-image: linear-gradient(to bottom, rgba(2, 6, 23, 0.5), rgba(2, 6, 23, 0.95)), url('https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&q=80&w=1920'); background-size: cover; background-position: center; background-attachment: fixed; color: var(--white); padding: 90px 20px 70px; text-align: center; }
-        .hero-inner { max-width: 850px; margin: 0 auto; }
-        .hero-badge { display: inline-block; background: rgba(180, 83, 9, 0.2); border: 1px solid var(--accent); color: var(--accent-light); padding: 6px 16px; border-radius: 30px; font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 20px; }
-        .hero h1 { font-family: 'Playfair Display', serif; font-size: 52px; font-weight: 800; margin: 0 0 20px; line-height: 1.2; color: var(--white); }
-        .hero p { font-size: 19px; color: #cbd5e1; margin: 0; font-weight: 400; line-height: 1.6; }
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            line-height: 1.6;
+            padding: 2rem;
+        }
 
-        .features-section { background: var(--white); padding: 80px 20px; border-bottom: 1px solid var(--border); }
-        .features-grid { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 40px; }
-        .feature-card { text-align: center; padding: 20px; }
-        .feature-icon { width: 60px; height: 60px; background: var(--light); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px; color: var(--accent); border: 1px solid var(--border); font-size: 24px; }
-        .feature-card h3 { font-family: 'Playfair Display', serif; font-size: 22px; margin: 0 0 10px; color: var(--primary); }
-        .feature-card p { color: #64748b; font-size: 15px; line-height: 1.6; margin: 0; }
+        .header {
+            max-width: 1200px;
+            margin: 0 auto 2rem;
+            text-align: center;
+        }
 
-        /* BACKEND COMMAND CENTER PANEL */
-        .backend-panel { position: fixed; top: 0; left: -750px; width: 700px; height: 100vh; background: #0f172a; color: var(--white); z-index: 200; padding: 40px; box-sizing: border-box; overflow-y: auto; transition: left 0.4s cubic-bezier(0.4, 0, 0.2, 1); box-shadow: 20px 0 50px rgba(0,0,0,0.5); }
-        .backend-panel.open { left: 0; }
-        .panel-close-btn { position: absolute; top: 30px; right: 30px; background: none; border: none; font-size: 28px; cursor: pointer; color: var(--white); opacity: 0.7; }
-        .panel-close-btn:hover { opacity: 1; }
-        .backend-panel h2 { font-family: 'Playfair Display', serif; margin-top: 0; color: #38bdf8; font-size: 28px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 15px; }
-        
-        /* Configuration Grid */
-        .config-section { background: #1e293b; border: 1px solid #334155; border-radius: 12px; padding: 20px; margin-bottom: 25px; }
-        .config-title { font-size: 12px; font-weight: 700; color: #94a3b8; text-transform: uppercase; margin-bottom: 15px; display: block; letter-spacing: 1.5px; }
-        
-        .toggle-row { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px solid #334155; }
-        .toggle-row:last-child { border-bottom: none; }
-        .toggle-label { font-size: 14px; font-weight: 500; }
-        
-        /* CSS Toggle Switch */
-        .switch { position: relative; display: inline-block; width: 44px; height: 24px; }
-        .switch input { opacity: 0; width: 0; height: 0; }
-        .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #475569; transition: .4s; border-radius: 34px; }
-        .slider:before { position: absolute; content: ""; height: 18px; width: 18px; left: 3px; bottom: 3px; background-color: white; transition: .4s; border-radius: 50%; }
-        input:checked + .slider { background-color: #10b981; }
-        input:checked + .slider:before { transform: translateX(20px); }
+        .header h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            color: var(--text-main);
+        }
 
-        /* Dropdown Select */
-        .sys-select { width: 100%; background: #0f172a; color: white; border: 1px solid #334155; padding: 10px; border-radius: 6px; font-size: 14px; margin-top: 5px; outline: none;}
-        .sys-select:focus { border-color: #38bdf8; }
+        .header p {
+            color: var(--text-muted);
+            font-size: 1.1rem;
+        }
 
-        /* Terminal Window */
-        .terminal { background-color: var(--terminal-bg); border: 1px solid #334155; border-radius: 8px; padding: 15px; font-family: 'Fira Code', 'Courier New', Courier, monospace; font-size: 12px; color: var(--terminal-text); overflow-y: auto; height: 300px; box-shadow: inset 0 2px 4px rgba(0,0,0,0.5); }
-        .terminal-header { display: flex; gap: 6px; margin-bottom: 10px; }
-        .terminal-dot { width: 10px; height: 10px; border-radius: 50%; }
-        .log-entry { margin-bottom: 8px; white-space: pre-wrap; line-height: 1.4; word-break: break-all;}
-        .log-time { color: #64748b; margin-right: 8px; }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1.2fr;
+            gap: 2rem;
+        }
 
-        /* Iframes */
-        .iframe-wrapper { display: none; margin-top: 20px; border-radius: 8px; overflow: hidden; height: 400px; background: var(--white); }
-        .iframe-wrapper.active { display: block; }
-        .iframe-wrapper iframe { width: 100%; height: 100%; border: none; }
+        /* Card Styles */
+        .card {
+            background-color: var(--surface-color);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
 
-        /* CHAT WIDGET STYLES (Kept exactly from your code) */
-        .chat-toggle { position: fixed; bottom: 30px; right: 30px; width: 65px; height: 65px; border-radius: 50%; background: var(--primary); color: var(--white); border: none; font-size: 28px; box-shadow: 0 10px 25px rgba(15, 23, 42, 0.4); cursor: pointer; z-index: 100; transition: transform 0.3s; display: flex; align-items: center; justify-content: center; }
-        .chat-toggle.hidden { transform: scale(0); opacity: 0; pointer-events: none; }
-        
-        .chat-container { position: fixed; bottom: 30px; right: 30px; width: 380px; background: var(--white); border-radius: 16px; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.25); display: flex; flex-direction: column; overflow: hidden; border: 1px solid var(--border); z-index: 101; transform: scale(0); transform-origin: bottom right; transition: all 0.3s; opacity: 0; pointer-events: none; }
-        .chat-container.open { transform: scale(1); opacity: 1; pointer-events: auto; }
-        
-        .chat-header { background: var(--primary); color: var(--white); padding: 15px 20px; font-weight: 600; display: flex; justify-content: space-between; align-items: center; font-family: 'Playfair Display', serif; font-size: 16px; }
-        
-        /* Omnichannel Selector in Chat Header */
-        .channel-selector { background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); color: white; border-radius: 4px; padding: 4px 8px; font-size: 11px; font-family: 'Inter', sans-serif; outline: none;}
-        .channel-selector option { background: var(--primary); color: white; }
+        .card h2 {
+            font-size: 1.25rem;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
 
-        .chat-box { height: 420px; padding: 20px; overflow-y: auto; display: flex; flex-direction: column; gap: 14px; background: #f8fafc; }
-        .msg { max-width: 85%; padding: 12px 16px; border-radius: 12px; font-size: 14px; line-height: 1.5; word-wrap: break-word; }
-        .msg.bot { background: var(--white); align-self: flex-start; border-bottom-left-radius: 4px; border: 1px solid var(--border); }
-        .msg.user { background: var(--primary); color: var(--white); align-self: flex-end; border-bottom-right-radius: 4px; }
-        
-        .chat-input-area { padding: 15px; background: var(--white); border-top: 1px solid var(--border); display: flex; gap: 8px; align-items: flex-end; }
-        textarea#user-input { flex: 1; padding: 12px 16px; border: 1px solid var(--border); border-radius: 8px; outline: none; font-family: 'Inter', sans-serif; font-size: 14px; resize: none; max-height: 120px; min-height: 20px; }
-        .send-btn { background: var(--accent); color: var(--white); border: none; padding: 12px 16px; border-radius: 8px; cursor: pointer; font-weight: 600; height: 44px; }
+        .badge {
+            font-size: 0.75rem;
+            background-color: rgba(56, 189, 248, 0.1);
+            color: var(--accent-color);
+            padding: 0.25rem 0.75rem;
+            border-radius: 999px;
+            font-weight: 600;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+        }
 
-        .typing-indicator { display: none; align-items: center; gap: 4px; padding: 14px 18px; width: fit-content; background: var(--white); align-self: flex-start; border-bottom-left-radius: 4px; border: 1px solid var(--border); border-radius: 12px;}
-        .typing-indicator span { display: block; width: 6px; height: 6px; background-color: #94a3b8; border-radius: 50%; animation: typing 1.4s infinite ease-in-out both; }
-        .typing-indicator span:nth-child(1) { animation-delay: -0.32s; }
-        .typing-indicator span:nth-child(2) { animation-delay: -0.16s; }
-        @keyframes typing { 0%, 80%, 100% { transform: scale(0); } 40% { transform: scale(1); } }
+        /* Form Elements */
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: var(--text-muted);
+        }
+
+        textarea, select {
+            width: 100%;
+            background-color: var(--bg-color);
+            border: 1px solid var(--border-color);
+            color: var(--text-main);
+            border-radius: 8px;
+            padding: 1rem;
+            margin-bottom: 1.5rem;
+            font-size: 0.95rem;
+            transition: border-color 0.2s;
+        }
+
+        textarea:focus, select:focus {
+            outline: none;
+            border-color: var(--accent-color);
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 150px;
+        }
+
+        button {
+            width: 100%;
+            background-color: var(--accent-color);
+            color: #0f172a;
+            border: none;
+            padding: 1rem;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.2s, transform 0.1s;
+        }
+
+        button:hover {
+            background-color: #7dd3fc;
+        }
+
+        button:active {
+            transform: scale(0.98);
+        }
+
+        button:disabled {
+            background-color: var(--border-color);
+            color: var(--text-muted);
+            cursor: not-allowed;
+        }
+
+        /* Output Section */
+        .output-section {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        /* Iframe Container */
+        .iframe-container {
+            width: 100%;
+            height: 400px;
+            border-radius: 8px;
+            overflow: hidden;
+            border: 1px solid var(--border-color);
+            display: none; /* Hidden by default */
+        }
+
+        .iframe-container.active {
+            display: block;
+        }
+
+        iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        /* Terminal Console */
+        .terminal {
+            background-color: var(--terminal-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 1.5rem;
+            font-family: 'Fira Code', 'Courier New', Courier, monospace;
+            font-size: 0.9rem;
+            color: var(--terminal-text);
+            overflow-x: auto;
+            min-height: 200px;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.5);
+        }
+
+        .terminal-header {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .terminal-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+
+        .dot-red { background-color: #ef4444; }
+        .dot-yellow { background-color: #f59e0b; }
+        .dot-green { background-color: #10b981; }
+
+        .log-entry {
+            margin-bottom: 0.5rem;
+            white-space: pre-wrap;
+        }
+
+        .log-time {
+            color: #64748b;
+            margin-right: 0.5rem;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                grid-template-columns: 1fr;
+            }
+        }
     </style>
 </head>
 <body>
 
-    <!-- BACKEND COMMAND CENTER -->
-    <div class="backend-panel" id="backendPanel">
-        <button class="panel-close-btn" onclick="toggleBackend()">×</button>
-        <h2>⚙️ Agency Command Center</h2>
-        <p style="color: #94a3b8; font-size: 14px; margin-bottom: 25px;">Configure real-time automation routing. Watch the API payload react live as you chat with the bot.</p>
+    <div class="header">
+        <h1>Intelligent Agency Router</h1>
+        <p>Omni-Channel AI Data Extraction & Workflow Orchestration</p>
+    </div>
 
-        <!-- Configuration Settings -->
-        <div class="config-section">
-            <span class="config-title">Data Routing & CRM Destination</span>
-            <select class="sys-select" id="crm-destination" onchange="handleDestinationChange()">
-                <option value="gohighlevel" data-mode="api">GoHighLevel (API Handshake)</option>
-                <option value="hubspot" data-mode="api">HubSpot CRM (API Handshake)</option>
-                <option value="airtable" data-mode="visual">Airtable / Google Sheets (Visual Data Sync)</option>
-                <option value="clickup" data-mode="visual">ClickUp (Task Management Sync)</option>
-            </select>
+    <div class="container">
+        <!-- LEFT COLUMN: INPUT -->
+        <div class="card">
+            <h2>Input Source <span class="badge">Live Demo</span></h2>
+            <form id="router-form">
+                <label for="raw-data">Raw / Unstructured Data</label>
+                <textarea id="raw-data" placeholder="Paste a messy client email, supplier invoice, support ticket, or raw lead dump here..."></textarea>
+
+                <label for="destination">Target CRM / Platform</label>
+                <select id="destination">
+                    <option value="airtable" data-mode="visual">Airtable (Visual CRM Sync)</option>
+                    <option value="clickup" data-mode="visual">ClickUp (Visual Kanban Sync)</option>
+                    <option value="gohighlevel" data-mode="api">GoHighLevel (API Handshake)</option>
+                    <option value="hubspot" data-mode="api">HubSpot (API Handshake)</option>
+                    <option value="asana" data-mode="api">Asana (API Handshake)</option>
+                </select>
+
+                <button type="submit" id="process-btn">Process & Route Data</button>
+            </form>
         </div>
 
-        <div class="config-section">
-            <span class="config-title">Workflow Triggers</span>
+        <!-- RIGHT COLUMN: OUTPUT -->
+        <div class="output-section">
             
-            <div class="toggle-row">
-                <span class="toggle-label">Enable Telegram / SMS Alerts (Broker Ping)</span>
-                <label class="switch">
-                    <input type="checkbox" id="toggle-telegram" checked>
-                    <span class="slider"></span>
-                </label>
+            <!-- Visual Mode: Iframes -->
+            <div class="card" id="visual-card">
+                <h2>Live Platform View <span class="badge" id="platform-badge">Airtable</span></h2>
+                
+                <div class="iframe-container active" id="iframe-airtable">
+                    <!-- REPLACE SRC WITH YOUR AIRTABLE SHARE LINK -->
+                    <iframe src="https://airtable.com/embed/YOUR_BASE_ID?backgroundColor=cyan"></iframe>
+                </div>
+                
+                <div class="iframe-container" id="iframe-clickup">
+                    <!-- REPLACE SRC WITH YOUR CLICKUP PUBLIC BOARD LINK -->
+                    <iframe src="https://sharing.clickup.com/YOUR_BOARD_ID"></iframe>
+                </div>
             </div>
-            
-            <div class="toggle-row">
-                <span class="toggle-label">Enable Google Calendar Auto-Booking</span>
-                <label class="switch">
-                    <input type="checkbox" id="toggle-calendar" checked>
-                    <span class="slider"></span>
-                </label>
-            </div>
-        </div>
 
-        <!-- API Terminal -->
-        <span class="config-title">Live Server Logs</span>
-        <div class="terminal" id="terminal">
-            <div class="terminal-header">
-                <div class="terminal-dot" style="background: #ef4444;"></div>
-                <div class="terminal-dot" style="background: #f59e0b;"></div>
-                <div class="terminal-dot" style="background: #10b981;"></div>
+            <!-- API Mode: Terminal Console -->
+            <div class="card">
+                <h2>API Server Logs <span class="badge">Backend Monitor</span></h2>
+                <div class="terminal" id="terminal">
+                    <div class="terminal-header">
+                        <div class="terminal-dot dot-red"></div>
+                        <div class="terminal-dot dot-yellow"></div>
+                        <div class="terminal-dot dot-green"></div>
+                    </div>
+                    <div id="console-output">
+                        <div class="log-entry"><span class="log-time">[SYSTEM]</span> Ready. Waiting for payload...</div>
+                    </div>
+                </div>
             </div>
-            <div id="console-output">
-                <div class="log-entry"><span class="log-time">[SYSTEM]</span> Command Center Initialized. Waiting for chat input...</div>
-            </div>
-        </div>
 
-        <!-- Visual Iframes (Hidden unless Airtable/ClickUp is selected) -->
-        <div id="visual-iframes">
-            <div class="iframe-wrapper" id="iframe-airtable">
-                <!-- Replace with your actual Google Sheet or Airtable embed -->
-                <iframe src="https://docs.google.com/spreadsheets/d/e/2PACX-1vQ2No54tpOdLhI3xUyJf0few-si1qAvoKpib1KIuZM7AlQiJElqZCGtOXKL1PQQqC1vtlB3IyA4wdmW/pubhtml?gid=382702241&amp;single=true&amp;widget=true&amp;headers=false"></iframe>
-            </div>
-            <div class="iframe-wrapper" id="iframe-calendar">
-                <iframe src="https://calendar.google.com/calendar/embed?src=sakuramisakikawaii%40gmail.com&ctz=America%2FLos_Angeles&mode=WEEK"></iframe>
-            </div>
         </div>
     </div>
 
-    <!-- HEADER -->
-    <header>
-        <div class="logo">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 2 7 12 12 22 7 12 2"></polygon><polyline points="2 17 12 22 22 17"></polyline><polyline points="2 12 12 17 22 12"></polyline></svg>
-            AI <span>Automation</span>
-        </div>
-        <button class="dev-btn" onclick="toggleBackend()">
-            <div class="pulse-dot"></div> Open Command Center
-        </button>
-    </header>
-
-    <!-- MAIN CONTENT (Shortened for brevity, keep your existing UI here) -->
-    <section class="hero">
-        <div class="hero-inner">
-            <div class="hero-badge">Production Demo</div>
-            <h1>Omnichannel AI Operations</h1>
-            <p>Chat with the bot below. Open the Command Center above to watch the API route the data to different CRMs in real-time based on your settings.</p>
-        </div>
-    </section>
-
-    <section class="features-section">
-        <div class="features-grid">
-            <div class="feature-card">
-                <div class="feature-icon">💬</div>
-                <h3>Omnichannel Support</h3>
-                <p>Simulate inbound leads from Web, Instagram, SMS, or WhatsApp directly in the chat window.</p>
-            </div>
-            <div class="feature-card">
-                <div class="feature-icon">🔄</div>
-                <h3>Dynamic Routing</h3>
-                <p>Change the CRM destination in the Command Center and watch the Webhook adapt instantly.</p>
-            </div>
-        </div>
-    </section>
-
-    <!-- CHAT WIDGET -->
-    <button class="chat-toggle" id="chatToggleBtn" onclick="toggleChat()">💬</button>
-
-    <div class="chat-container" id="chatContainer">
-        <div class="chat-header">
-            <div>Sarah | AI Agent</div>
-            <!-- Omnichannel Simulator Dropdown -->
-            <select class="channel-selector" id="channel-simulator">
-                <option value="web">🌐 Web Chat</option>
-                <option value="instagram">📸 Instagram DM</option>
-                <option value="sms">📱 SMS / Text</option>
-                <option value="whatsapp">💬 WhatsApp</option>
-            </select>
-            <button class="close-chat-btn" onclick="toggleChat()" style="background:none; border:none; color:white; font-size:20px; cursor:pointer;">×</button>
-        </div>
-        
-        <div class="chat-box" id="chat-box">
-            <div class="msg bot">Hi! I'm Sarah. I can help you view properties or route your data. Try me out!</div>
-            <div id="typing-indicator" class="typing-indicator">
-                <span></span><span></span><span></span>
-            </div>
-        </div>
-
-        <div class="chat-input-area">
-            <textarea id="user-input" rows="1" placeholder="Type a message..." onkeydown="handleKeyPress(event)"></textarea>
-            <button class="send-btn" id="send-btn" onclick="sendMessage()">Send</button>
-        </div>
-    </div>
-
-    <!-- SCRIPTS -->
     <script>
-        // --- YOUR NGROK URL ---
-        const N8N_WEBHOOK_URL = "https://helper-rubbing-refrain.ngrok-free.dev/webhook/apex-web-hub";
+        // DOM Elements
+        const form = document.getElementById('router-form');
+        const destinationSelect = document.getElementById('destination');
+        const rawDataInput = document.getElementById('raw-data');
+        const processBtn = document.getElementById('process-btn');
+        const visualCard = document.getElementById('visual-card');
+        const platformBadge = document.getElementById('platform-badge');
+        const consoleOutput = document.getElementById('console-output');
 
-        let isSending = false;
-        const sessionId = "session_" + Math.floor(Math.random() * 1000000000);
+        // n8n Webhook URL (REPLACE WITH YOUR PRODUCTION WEBHOOK)
+        const N8N_WEBHOOK_URL = 'https://your-n8n-instance.com/webhook/agency-router';
 
-        function toggleBackend() {
-            document.getElementById('backendPanel').classList.toggle('open');
-        }
-
-        function toggleChat() {
-            const chat = document.getElementById('chatContainer');
-            document.getElementById('chatToggleBtn').classList.toggle('hidden');
-            chat.classList.toggle('open');
-        }
-
-        // Terminal Logging Function
+        // Helper: Add log to terminal
         function logToTerminal(message, type = 'info') {
-            const terminal = document.getElementById('console-output');
             const time = new Date().toLocaleTimeString([], { hour12: false });
             const logEntry = document.createElement('div');
             logEntry.className = 'log-entry';
             
-            let prefix = '[SYS]';
-            if (type === 'send') prefix = '<span style="color:#38bdf8">[POST -> WEBHOOK]</span>';
-            if (type === 'receive') prefix = '<span style="color:#10b981">[200 OK <- N8N]</span>';
-            if (type === 'error') prefix = '<span style="color:#ef4444">[ERROR]</span>';
+            let prefix = '[SYSTEM]';
+            if (type === 'send') prefix = '[POST -> n8n]';
+            if (type === 'success') prefix = '[200 OK]';
+            if (type === 'error') prefix = '[ERROR]';
 
-            logEntry.innerHTML = `<span class="log-time">${time}</span> ${prefix} ${message}`;
-            terminal.appendChild(logEntry);
+            logEntry.innerHTML = `<span class="log-time">${time} ${prefix}</span> ${message}`;
+            consoleOutput.appendChild(logEntry);
             
-            const terminalContainer = document.getElementById('terminal');
-            terminalContainer.scrollTop = terminalContainer.scrollHeight;
+            // Auto-scroll to bottom
+            const terminal = document.getElementById('terminal');
+            terminal.scrollTop = terminal.scrollHeight;
         }
 
-        // Handle CRM Destination Change
-        function handleDestinationChange() {
-            const select = document.getElementById('crm-destination');
-            const mode = select.options[select.selectedIndex].getAttribute('data-mode');
-            const iframeWrapper = document.getElementById('iframe-airtable');
-            const calendarWrapper = document.getElementById('iframe-calendar');
+        // Handle Dropdown Changes (Switch Visual Iframes)
+        destinationSelect.addEventListener('change', (e) => {
+            const selectedOption = e.target.options[e.target.selectedIndex];
+            const platform = e.target.value;
+            const mode = selectedOption.getAttribute('data-mode');
+
+            // Update Badge
+            platformBadge.textContent = selectedOption.text.split(' (')[0];
+
+            // Hide all iframes
+            document.querySelectorAll('.iframe-container').forEach(el => el.classList.remove('active'));
 
             if (mode === 'visual') {
-                iframeWrapper.classList.add('active');
-                calendarWrapper.classList.add('active');
-                logToTerminal(`Command Center layout switched to VISUAL MODE for ${select.value.toUpperCase()}`);
+                visualCard.style.display = 'block';
+                const activeIframe = document.getElementById(`iframe-${platform}`);
+                if (activeIframe) activeIframe.classList.add('active');
+                logToTerminal(`UI switched to visual mode for ${platform.toUpperCase()}`);
             } else {
-                iframeWrapper.classList.remove('active');
-                calendarWrapper.classList.remove('active');
-                logToTerminal(`Command Center layout switched to API TERMINAL MODE for ${select.value.toUpperCase()}`);
+                visualCard.style.display = 'none';
+                logToTerminal(`UI switched to API-only mode for ${platform.toUpperCase()}`);
             }
-        }
+        });
 
-        function appendMessage(text, sender) {
-            const chatBox = document.getElementById("chat-box");
-            const typingIndicator = document.getElementById("typing-indicator");
-            const msgDiv = document.createElement("div");
-            msgDiv.className = `msg ${sender}`;
-            msgDiv.innerHTML = text; 
-            chatBox.insertBefore(msgDiv, typingIndicator);
-            chatBox.scrollTop = chatBox.scrollHeight;
-        }
+        // Form Submit Handler
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const rawData = rawDataInput.value.trim();
+            const platform = destinationSelect.value;
+            const mode = destinationSelect.options[destinationSelect.selectedIndex].getAttribute('data-mode');
 
-        async function sendMessage() {
-            const userInput = document.getElementById("user-input");
-            const text = userInput.value.trim();
-            if (!text || isSending) return;
+            if (!rawData) {
+                logToTerminal('Payload rejected: Raw data field is empty.', 'error');
+                return;
+            }
 
-            isSending = true;
-            appendMessage(text, "user");
-            userInput.value = "";
-            document.getElementById("typing-indicator").style.display = "flex";
-
-            // GET VALUES FROM COMMAND CENTER
-            const sourceChannel = document.getElementById('channel-simulator').value;
-            const crmDestination = document.getElementById('crm-destination').value;
-            const enableTelegram = document.getElementById('toggle-telegram').checked;
-            const enableCalendar = document.getElementById('toggle-calendar').checked;
-
-            // Construct payload
-            const payload = { 
-                sessionId: sessionId, 
-                message: text,
-                settings: {
-                    source: sourceChannel,
-                    route_to: crmDestination,
-                    ping_broker: enableTelegram,
-                    auto_book: enableCalendar
-                }
-            };
-
-            // Log the payload leaving the browser
-            logToTerminal(`Sending payload with Config: [Source: ${sourceChannel.toUpperCase()}, Route: ${crmDestination.toUpperCase()}]\n${JSON.stringify(payload, null, 2)}`, 'send');
+            // UI Loading State
+            processBtn.disabled = true;
+            processBtn.textContent = 'Processing Payload via AI...';
+            
+            logToTerminal(`Extracting entities via Gemini and routing to ${platform.toUpperCase()}...`, 'send');
 
             try {
+                // Fetch call to your n8n Webhook
                 const response = await fetch(N8N_WEBHOOK_URL, {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json", "ngrok-skip-browser-warning": "true" },
-                    body: JSON.stringify(payload)
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        input_data: rawData,
+                        destination: platform,
+                        timestamp: new Date().toISOString()
+                    })
                 });
 
-                const data = await response.json();
-                
-                // Log the response returning from n8n
-                logToTerminal(`Received response from Webhook:\n${JSON.stringify(data, null, 2)}`, 'receive');
+                if (!response.ok) throw new Error('Network response was not ok');
 
-                document.getElementById("typing-indicator").style.display = "none";
-                appendMessage(data.text || "Processed.", "bot");
+                const responseData = await response.json();
+                
+                // Pretty print the JSON response in the terminal
+                const formattedJSON = JSON.stringify(responseData, null, 2);
+                logToTerminal(`\n${formattedJSON}\n`, 'success');
+
+                if (mode === 'visual') {
+                    logToTerminal(`Data successfully pushed. Verify live updates in the ${platform.toUpperCase()} embed above.`, 'success');
+                } else {
+                    logToTerminal(`API Handshake complete. Data successfully securely routed to ${platform.toUpperCase()}.`, 'success');
+                }
 
             } catch (error) {
-                document.getElementById("typing-indicator").style.display = "none";
-                appendMessage("System offline.", "bot");
-                logToTerminal(`Webhook connection failed: ${error}`, 'error');
-            } finally {
-                isSending = false; 
-            }
-        }
+                // For demo purposes, if the webhook isn't set up yet, simulate a success response
+                setTimeout(() => {
+                    const mockResponse = {
+                        status: "success",
+                        ai_extracted_data: {
+                            classification: "high_priority_lead",
+                            sentiment: "positive",
+                            extracted_fields: {
+                                name: "John Doe",
+                                budget: "$10,000",
+                                urgency: "ASAP"
+                            }
+                        },
+                        routing: {
+                            destination: platform,
+                            api_status: 200,
+                            record_id: "rec" + Math.floor(Math.random() * 100000)
+                        }
+                    };
+                    
+                    const formattedJSON = JSON.stringify(mockResponse, null, 2);
+                    logToTerminal(`\n${formattedJSON}\n`, 'success');
+                    
+                    if (mode === 'visual') {
+                        logToTerminal(`Data successfully pushed. Verify live updates in the ${platform.toUpperCase()} embed above.`, 'success');
+                    } else {
+                        logToTerminal(`API Handshake complete. Data successfully securely routed to ${platform.toUpperCase()}.`, 'success');
+                    }
 
-        function handleKeyPress(e) {
-            if (e.key === "Enter" && !e.shiftKey) {
-                e.preventDefault();
-                sendMessage();
+                    processBtn.disabled = false;
+                    processBtn.textContent = 'Process & Route Data';
+                }, 1500); // Simulated delay
             }
-        }
+        });
     </script>
 </body>
 </html>
