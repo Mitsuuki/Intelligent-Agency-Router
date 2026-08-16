@@ -251,16 +251,20 @@
             <div class="card" id="visual-card">
                 <h2>Live Platform View <span class="badge" id="platform-badge">Airtable</span></h2>
                 
-        <div id="visual-iframes">
-            <div class="iframe-wrapper" id="iframe-airtable">
-                <!-- YOUR REAL AIRTABLE BASE -->
-                <iframe src="https://airtable.com/embed/appQ8sdBJ7Jz8PGVV/shrFX6hZetHGzgmSy" frameborder="0" onmousewheel="" width="100%" height="100%" style="background: transparent; border: 1px solid #ccc;"></iframe>
+            <!-- Visual Mode: Iframes -->
+            <div class="card" id="visual-card">
+                <h2>Live Platform View <span class="badge" id="platform-badge">Airtable</span></h2>
+                
+                <div class="iframe-container active" id="iframe-airtable">
+                    <!-- AIRTABLE EMBED -->
+                    <iframe src="https://airtable.com/embed/appQ8sdBJ7Jz8PGVV/shrFX6hZetHGzgmSy" frameborder="0" onmousewheel="" width="100%" height="100%" style="background: transparent; border: none;"></iframe>
+                </div>
+                
+                <div class="iframe-container" id="iframe-clickup">
+                    <!-- CLICKUP EMBED -->
+                    <iframe src="https://sharing.clickup.com/90161750592/l/h/6-901616486531-1/8afa9ed9b7b2f1c" frameborder="0" onwheel="" width="100%" height="100%" style="background: transparent; border: none;"></iframe>
+                </div>
             </div>
-            <div class="iframe-wrapper" id="iframe-clickup">
-                <!-- YOUR REAL CLICKUP BOARD -->
-                <iframe src="https://sharing.clickup.com/90161750592/l/h/6-901616486531-1/8afa9ed9b7b2f1c" onwheel="" width="100%" height="100%" style="background: transparent; border: 1px solid #ccc;"></iframe>
-            </div>
-        </div>
 
             <!-- API Mode: Terminal Console -->
             <div class="card">
